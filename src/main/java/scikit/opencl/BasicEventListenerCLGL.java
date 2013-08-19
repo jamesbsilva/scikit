@@ -309,5 +309,5 @@ public class BasicEventListenerCLGL implements GLEventListener {
     *  @param drawable - drawable
     */ 
     @Override
-    public void dispose(GLAutoDrawable drawable) {}
+    public void dispose(GLAutoDrawable drawable){}
 }

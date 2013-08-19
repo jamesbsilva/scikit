@@ -170,7 +170,7 @@ public class CLKernelHelper {
         // Assert kernel buffers are setup 
         //assertKernelBuffersMade(kernelname);
         if(!kernelArgStatus.get(kernelname)){
-            System.err.println("CLKernelHelper | Kernel Arguments not previously set. Will Attempt to set arguments now. ");
+            System.err.println("CLKernelHelper | Kernel Arguments for "+kernelname+" not previously set. Will Attempt to set arguments now. ");
             setKernelArg(kernelname);
         }
         setQueueBuff(kernelname);
@@ -192,7 +192,7 @@ public class CLKernelHelper {
         // Assert kernel buffers are setup 
         //assertKernelBuffersMade(kernelname);
         if(!kernelArgStatus.get(kernelname)){
-            System.err.println("CLKernelHelper | Kernel Arguments not previously set. Will Attempt to set arguments now. ");
+            System.err.println("CLKernelHelper | Kernel Arguments "+kernelname+" not previously set. Will Attempt to set arguments now. ");
             setKernelArg(kernelname);
         }
         setQueueBuff(kernelname);
@@ -217,7 +217,7 @@ public class CLKernelHelper {
         // Assert kernel buffers are setup 
         //assertKernelBuffersMade(kernelname);
         if(!kernelArgStatus.get(kernelname)){
-            System.err.println("CLHelper | Kernel Arguments not previously set. Will Attempt to set arguments now. ");
+            System.err.println("CLHelper | Kernel Arguments "+kernelname+"  not previously set. Will Attempt to set arguments now. ");
             setKernelArg(kernelname);
         }
         setQueueBuff(kernelname);
@@ -306,7 +306,7 @@ public class CLKernelHelper {
     
     /**
     *       getKernelIOTypes reads the given kernels source and parses out a
-    *   list of arguments to use for type checking.
+    *   list of arguments to use for type checking. Needs kernel with __kernel in source.
     * 
     * @param kernelname - kernel to check arguments
     * @param source - source of kernel
@@ -314,8 +314,8 @@ public class CLKernelHelper {
     */
     private ArrayList<String> getKernelIOTypes(String kernelname, String source){
         //parse io types
-        // kernel function starts with kernel keyword
-        source = source.substring(source.indexOf("kernel"),source.length());
+        // kernel function starts with __kernel keyword
+        source = source.substring(source.indexOf("__kernel"),source.length());
         String[] src=source.split("\\(");
         src = src[1].split("\\)");
         
@@ -492,11 +492,11 @@ public class CLKernelHelper {
                     kernel.putArg(floatBuff.get(longBuffInd));}                
                 longBuffInd++;
             }else if(type.contains("float")&& !(type.contains("buffer"))){
-                 if(setPrev){
+                if(setPrev){
                     kernel.setArg(Ind,floatArg.get(flInd));                    
-                 }else{         
-                     kernel.putArg(floatArg.get(flInd));
-                 }
+                }else{         
+                    kernel.putArg(floatArg.get(flInd));
+                }
                 flInd++;
             }else if(type.contains("int")&& !(type.contains("buffer"))){
                 if(setPrev){
