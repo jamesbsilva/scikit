@@ -885,6 +885,7 @@ public class CLHelper{
     */
     public void setIntArg(String kernelname,int argn, int val){
         arghandler.setIntArg(kernelname,argn,val);
+        if(kernelhandler.getKernelArgStatus(kernelname)){kernelhandler.setKernelArg(kernelname, true);};
     }
 
     /**
@@ -896,6 +897,7 @@ public class CLHelper{
     */
     public void setLongArg(String kernelname,int argn, long val){
         arghandler.setLongArg(kernelname,argn,val);
+        if(kernelhandler.getKernelArgStatus(kernelname)){kernelhandler.setKernelArg(kernelname, true);};
     }
 
     
@@ -937,7 +939,8 @@ public class CLHelper{
     * @param val - initial value of float
     */
     public void setFloatArg(String kernelname,int argn, float val){
-            arghandler.setFloatArg(kernelname,argn,val); 
+        arghandler.setFloatArg(kernelname,argn,val); 
+        if(kernelhandler.getKernelArgStatus(kernelname)){kernelhandler.setKernelArg(kernelname, true);};
     }
     
     /**
@@ -1087,8 +1090,14 @@ public class CLHelper{
         
     }
     
-    
-    
+    /**
+    *       setPrintMode sets the print mode in getBuffer functions
+    * 
+    * @param md - true if printing just values false if print index and values 
+    */
+    public void setPrintMode(boolean md){
+        arghandler.setPrintMode(md);
+    }
     
     
     

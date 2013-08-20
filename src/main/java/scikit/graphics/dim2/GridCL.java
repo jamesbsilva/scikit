@@ -76,28 +76,44 @@ public class GridCL extends Scene2DCL {
         private GLContext _context;        
         private JFrame _frame;
         
-    /**
-    *         gridCL constructor.
-    * 
-    *  @param title - title of grid
-    *  @param clin - clhelper in which to setup the grid
-    *  @param Lxin - x coordinate size of grid
-    *  @param Lyin - y coordinate size of grid
-    *  @param G - geometry of lattice to draw (6 - triangular / 3- Honeycomb/ else square)
-    *               use square for basic grid
-    */ 
-    public GridCL(String title,CLHelper clin, int Lxin, int Lyin, int G) {
+        /**
+        *         gridCL constructor.
+        * 
+        *  @param title - title of grid
+        *  @param clin - clhelper in which to setup the grid
+        *  @param Lxin - x coordinate size of grid
+        *  @param Lyin - y coordinate size of grid
+        *  @param drawScale - adjust scale for drawing lattice
+        *  @param G - geometry of lattice to draw (6 - triangular / 3- Honeycomb/ else square)
+        *               use square for basic grid
+        */ 
+        public GridCL(String title,CLHelper clin, int Lxin, int Lyin, int G, double drawScale) {
             super(title,clin);
             initDrawKernel = drawLatticeKernel;
             initDrawKernelPosBufferNum = posBuffNum;
             initDrawKernelColBufferNum = colBuffNum;
             Lx = Lxin;
             Ly = Lyin;
+            scaleLat = drawScale;
             latticeGeometry = G;
             makeEventListener();
             usi = new BasicUSI();
             //initDrawLattice(Lx,0,1);
             if(_component == null)makeFrame(_canvas);            
+        }
+        /**
+        *         gridCL constructor.
+        * 
+        *  @param title - title of grid
+        *  @param clin - clhelper in which to setup the grid
+        *  @param Lxin - x coordinate size of grid
+        *  @param Lyin - y coordinate size of grid
+        *  @param G - geometry of lattice to draw (6 - triangular / 3- Honeycomb/ else square)
+        *               use square for basic grid
+        */ 
+        public GridCL(String title,CLHelper clin, int Lxin, int Lyin, int G) {
+            // default draw scale of 0.0
+            this(title,clin,Lxin,Lyin,G,0.045);
         }
         // make the GLEventListener for this grid
         private void makeEventListener(){
@@ -345,6 +361,27 @@ public class GridCL extends Scene2DCL {
                 }
             } catch (IOException e) {}
 	}
+        
+        /**
+        *         setPointSize sets the size of points drawn.
+        * 
+        *  @param pointS - size of points to be drawn
+        */ 
+        public void setPointSize(float pointS) {
+            _bel.setPointSize(pointS);
+        }
+        
+        /**
+        *         rescaleGridDrawing rescales the distance between the grid.
+        * 
+        *  @param scale - new drawing scale
+        */ 
+        public void rescaleGridDrawing(double scale) {
+            scaleLat = scale;
+            clhelper.setFloatArg(initDrawKernel, 0, (float)scaleLat);
+            clhelper.runKernel(initDrawKernel, (Lx*Ly), 1);
+        }
+        
         /**
         *         interact is an interface method with UI like the BasicUSI and OpenGL. 
         * 

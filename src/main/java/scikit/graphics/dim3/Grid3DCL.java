@@ -76,28 +76,46 @@ public class Grid3DCL extends Scene2DCL {
         private GLJPanel _canvas;        
         private GLContext _context;        
         private JFrame _frame;
-        
-    /**
-    *         gridCL constructor.
-    * 
-    *  @param title - title of grid
-    *  @param clin - clhelper in which to setup the grid
-    *  @param Lxin - x coordinate size of grid
-    *  @param Lyin - y coordinate size of grid
-    *  @param Lzin - z coordinate size of grid
-    */ 
-    public Grid3DCL(String title,CLHelper clin, int Lxin, int Lyin,int Lzin) {
-            super(title,clin);
-            initDrawKernel = drawLatticeKernel;
-            initDrawKernelPosBufferNum = posBuffNum;
-            initDrawKernelColBufferNum = colBuffNum;
-            Lx = Lxin;
-            Ly = Lyin;
-            Lz = Lzin;
-            makeEventListener();
-            usi = new BasicUSI();
-            if(_component == null)makeFrame(_canvas);            
+    
+        /**
+        *         gridCL constructor.
+        * 
+        *  @param title - title of grid
+        *  @param clin - clhelper in which to setup the grid
+        *  @param Lxin - x coordinate size of grid
+        *  @param Lyin - y coordinate size of grid
+        *  @param Lzin - z coordinate size of grid
+        *  @param drawScale - adjust scale for drawing lattice
+        */ 
+        public Grid3DCL(String title,CLHelper clin, int Lxin, int Lyin,int Lzin, double drawScale) {
+                super(title,clin);
+                initDrawKernel = drawLatticeKernel;
+                initDrawKernelPosBufferNum = posBuffNum;
+                initDrawKernelColBufferNum = colBuffNum;
+                Lx = Lxin;
+                Ly = Lyin;
+                Lz = Lzin;
+                scaleLat = drawScale;
+                makeEventListener();
+                usi = new BasicUSI();
+                if(_component == null)makeFrame(_canvas);            
         }
+
+
+        /**
+        *         gridCL constructor.
+        * 
+        *  @param title - title of grid
+        *  @param clin - clhelper in which to setup the grid
+        *  @param Lxin - x coordinate size of grid
+        *  @param Lyin - y coordinate size of grid
+        *  @param Lzin - z coordinate size of grid
+        */ 
+        public Grid3DCL(String title,CLHelper clin, int Lxin, int Lyin,int Lzin) {
+            // default draw scale of 0.09
+            this(title,clin,Lxin,Lyin,Lzin,0.09);
+        }
+    
         // make the GLEventListener for this grid
         private void makeEventListener(){
             System.out.println("Grid Dimensions | Lx: "+Lx+"  Ly: "+Ly+"  Lz: "+Lz+"   width: "+_w+"   height: "+_h);
@@ -105,7 +123,7 @@ public class Grid3DCL extends Scene2DCL {
             clscheduler = _bel.getCLScheduler();
             _canvas.addGLEventListener(_bel);
         }
-        
+
         /**
         *         isOpenCLReady returns true if CLHelper is properly
         *   setup for interoperability. Any calls with CLHelper on a CLGL context
@@ -249,6 +267,18 @@ public class Grid3DCL extends Scene2DCL {
             clhelper.runKernel(initDrawKernel, (Lx*Ly*Lz), 1);    
         }
         
+        /**
+        *         rescaleGridDrawing rescales the distance between the grid.
+        * 
+        *  @param scale - new drawing scale
+        */ 
+        public void rescaleGridDrawing(double scale) {
+            scaleLat = scale;
+            clhelper.setFloatArg(initDrawKernel, 0, (float)scaleLat);
+            clhelper.runKernel(initDrawKernel, (Lx*Ly*Lz), 1);
+        }
+        
+        
 	@Override
         protected void drawBackground(Gfx2D g) {
             // looks better without background
@@ -357,6 +387,14 @@ public class Grid3DCL extends Scene2DCL {
         @Override
         protected void drawAll(Object g) {
             throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        }
+        /**
+        *         setPointSize sets the size of points drawn.
+        * 
+        *  @param pointS - size of points to be drawn
+        */ 
+        public void setPointSize(float pointS) {
+            _bel.setPointSize(pointS);
         }
         
         private String getDrawKernelAsString(){

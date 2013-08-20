@@ -1170,9 +1170,19 @@ public class CLArgHelper{
         queue.putReadBuffer(buffer, true);        
         return buffer.getBuffer();
     }
+    
     // utility class to output a string formatted to have class name before
     private void outputClassMessage(String msg){
         if(outputMsg){
         System.out.println("CLArgHelper | "+msg);}
+    }
+    
+    /**
+    *       setPrintMode sets the print mode in getBuffer functions
+    * 
+    * @param md - true if printing just values false if print index and values 
+    */
+    public void setPrintMode(boolean md){
+        printJustVals = md;
     }
 }

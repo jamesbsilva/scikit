@@ -221,7 +221,7 @@ public class CLKernelHelper {
             setKernelArg(kernelname);
         }
         setQueueBuff(kernelname);
-        queue.put3DRangeKernel(kernels.get(kernelname), 0, 0, 0,gsizex, gsizey, lsizex, lsizey, lsizez, lsizez);
+        queue.put3DRangeKernel(kernels.get(kernelname), 0, 0, 0,gsizex, gsizey, gsizez, lsizex, lsizey, lsizez);
         queueOutputBuffers(kernelname);
         queue.finish();
     }
@@ -452,6 +452,10 @@ public class CLKernelHelper {
     * @param setPrev - true if already set previously
     */
     public void setKernelArg(String kernelname, boolean setPrev){
+        // if previously set override
+        if(kernelArgStatus.get(kernelname)){
+           setPrev = true; 
+        }
         ArrayList<String> types = argTypes.get(kernelname);
         int intBuffInd = 0;
         int flBuffInd = 0;
@@ -570,6 +574,17 @@ public class CLKernelHelper {
         outputClassString("-------------------------------------------------------------------------------");
     }
 
+    /**
+    *       getKernelArgStatus returns true if kernel arguments have been 
+    *   previously set for given kernel.
+    * 
+    * @param kernel - name of kernel to check status
+    * @return true if kernel arguments have been set
+    */
+    public boolean getKernelArgStatus(String kernel){
+        return kernelArgStatus.get(kernel);
+    }
+    
     /**
     *       readFile converts a file into a string. Useful for the building of 
     *   OpenCL kernel.

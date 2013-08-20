@@ -12,7 +12,7 @@ import java.util.Random;
 /**
  *      RandomNumberCL manages OpenCL random number generating for a few random 
  *  number generators (Random123, MersenneTwister (NVIDIA implementation),MWC). 
- *  You should install the following. Random123 is the default RNG.
+ *  You should install some of the following. Random123 is the default RNG.
  *
  * @see <a href="http://www.deshawresearch.com/resources_random123.html">http://www.deshawresearch.com/resources_random123.html</a> 
  * @see <a href="http://cas.ee.ic.ac.uk/people/dt10/research/rngs-gpu-mwc64x.html">http://cas.ee.ic.ac.uk/people/dt10/research/rngs-gpu-mwc64x.html</a> 
