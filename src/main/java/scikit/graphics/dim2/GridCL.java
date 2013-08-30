@@ -261,7 +261,7 @@ public class GridCL extends Scene2DCL {
             clhelper.setIntArg(initDrawKernel,1, latticeGeometry);
             clhelper.setFloatArg(initDrawKernel,0,(float)scaleLat);
             clhelper.setKernelArg(initDrawKernel);
-            clhelper.runKernel(initDrawKernel, (posBuffSize/4),1);    
+            clhelper.runKernel(initDrawKernel, (Lx*Ly),clhelper.maxLocalSize1D(Lx*Ly));    
         }
         
 	@Override
@@ -379,7 +379,7 @@ public class GridCL extends Scene2DCL {
         public void rescaleGridDrawing(double scale) {
             scaleLat = scale;
             clhelper.setFloatArg(initDrawKernel, 0, (float)scaleLat);
-            clhelper.runKernel(initDrawKernel, (Lx*Ly), 1);
+            clhelper.runKernel(initDrawKernel, (Lx*Ly),clhelper.maxLocalSize1D(Lx*Ly));
         }
         
         /**

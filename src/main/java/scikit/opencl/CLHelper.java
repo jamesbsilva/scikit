@@ -793,10 +793,8 @@ public class CLHelper{
     * @param modFill - fill using a modulus fill which fills based on repetitions of array list
     */    
     public void setIntBuffer(String kernelname,int argn,int size, ArrayList<Integer> s0, boolean modFill){
-        if(modFill){    
-        arghandler.manageBuffer(kernelname, "int", argn, "set", size, "", 2, s0, null,false,0);}
+        if(modFill){arghandler.manageBuffer(kernelname, "int", argn, "set", size, "", 2, s0, null,false,0);}
         else{arghandler.manageBuffer(kernelname, "int", argn, "set", size, "", 1, s0, null,false,0);}
-        
     }
 
     /**
@@ -1132,11 +1130,73 @@ public class CLHelper{
         }
         return rw;
     }
-    
+   
+    /**
+    *       maxLocalSize1D determines the largest local work size that is still
+    *   allowed on current device. 
+    * 
+    * @param gsize- global work size
+    * @return local work size
+    */
+    public int maxLocalSize1D(int gsize){
+        int max = getCurrentDevice1DMaxWorkItems();
+        int lsize = 1;
+        if( gsize > max){
+            lsize = max;
+            while( gsize % lsize != 0 && lsize > 1 ){
+                lsize--;
+            }
+        }else{
+            lsize = gsize;
+        }
+        return lsize;
+    } 
+
+    /**
+    *       maxLocalSize2D determines the largest local work size that is still
+    *   allowed on current device. 
+    * 
+    * @param gsize- global work size
+    * @return local work size
+    */
+    public int maxLocalSize2D(int gsize){
+        int max = (int) Math.pow(getCurrentDevice1DMaxWorkItems(), 1.0/2.0);
+        int lsize = 1;
+        if( gsize > max){
+            lsize = max;
+            while( gsize % lsize != 0 && lsize > 1 ){
+                lsize--;
+            }
+        }else{
+            lsize = (int) Math.pow(gsize, 1.0/2.0);
+        }
+        return lsize;
+    } 
+
+    /**
+    *       maxLocalSize3D determines the largest local work size that is still
+    *   allowed on current device. 
+    * 
+    * @param gsize- global work size
+    * @return local work size
+    */
+    public int maxLocalSize3D(int gsize){
+        int max = (int) Math.pow(getCurrentDevice1DMaxWorkItems(), 1.0/3.0);
+        int lsize = 1;
+        if( gsize > max){
+            lsize = max;
+            while( gsize % lsize != 0 && lsize > 1 ){
+                lsize--;
+            }
+        }else{
+            lsize = (int) Math.pow(gsize, 1.0/3.0);
+        }
+        return lsize;
+    } 
+
     private void outputClassString(String msg){
         if(outputMode){System.out.println("CLHelper | "+msg);}
     }
-    
     private void outputClassStarLine(){
         outputClassString("***********************************************************************");
     }    

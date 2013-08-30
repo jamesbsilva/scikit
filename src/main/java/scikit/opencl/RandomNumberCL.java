@@ -253,29 +253,12 @@ public class RandomNumberCL {
         clhandler.setKernelArg(flUpdateKernel, true); 
         clhandler.runKernel(flUpdateKernel,workInfo[0],workInfo[1]);
     }
+    
     // Class divides the work for the running of the kernel
     private void divideWork(int size){
-        int i=1;
-        int remainder = size;
-        int local = size;
-
-        // If too many threads than divide threads into local workgroups
-        while(local> maxThreads && i < size){
-            while(remainder !=0 && i < size){
-                i++;
-                remainder = size % i; 
-            }
-            local = (int) (size/i);
-            if(local> maxThreads && remainder ==0){
-                i++;
-                remainder= size % i; 
-                local = (int) (size/i);}
-        }
-
-        local = (int) (size/i);        
         int[] temp = new int[2];
         temp[0] = size;
-        temp[1] = local;
+        temp[1] = clhandler.maxLocalSize1D(size);
         workgroupInfo.put(nBuffers, temp);
     }
     

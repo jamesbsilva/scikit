@@ -250,6 +250,7 @@ public class Grid3DCL extends Scene2DCL {
                 _canvas.removeMouseListener(mls[u]);
             }
         }
+        
         // initial drawing of lattice
         private void initLat(){
             int posBuffSize = 4*Lx*Ly*Lz;
@@ -264,7 +265,7 @@ public class Grid3DCL extends Scene2DCL {
             clhelper.setIntArg(initDrawKernel, 2, Lz);
             clhelper.setFloatArg(initDrawKernel, 0, (float)scaleLat);
             clhelper.setKernelArg(initDrawKernel);
-            clhelper.runKernel(initDrawKernel, (Lx*Ly*Lz), 1);    
+            clhelper.runKernel(initDrawKernel, (Lx*Ly*Lz), clhelper.maxLocalSize1D(Lx*Ly*Lz));    
         }
         
         /**
@@ -275,7 +276,7 @@ public class Grid3DCL extends Scene2DCL {
         public void rescaleGridDrawing(double scale) {
             scaleLat = scale;
             clhelper.setFloatArg(initDrawKernel, 0, (float)scaleLat);
-            clhelper.runKernel(initDrawKernel, (Lx*Ly*Lz), 1);
+            clhelper.runKernel(initDrawKernel, (Lx*Ly*Lz), clhelper.maxLocalSize1D(Lx*Ly*Lz));
         }
         
         
