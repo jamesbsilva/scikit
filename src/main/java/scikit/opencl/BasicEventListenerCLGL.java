@@ -28,13 +28,11 @@ public class BasicEventListenerCLGL implements GLEventListener {
     private final GLUgl2 glu = new GLUgl2();
     private int width = 600;
     private int height = 400;
-    private final int[] glObjectsPos = new int[2];
-    private int posBuffSize = 0;
-    private final int[] glObjectsCol = new int[2];
-    private int colBuffSize = 0;
+    private int posBuffSize = 0; private int colBuffSize = 0;
+    private final int[] glObjectsCol = new int[2]; private final int[] glObjectsPos = new int[2];
     private float pointSize = 1.0f;
     private final int VERTICES = 0;
-    private int swapInterval = 20;
+    private AtomicBoolean updateSwapInt = new AtomicBoolean(false); private int swapInterval = 20;
     private CLScheduler clscheduler;
     private CLHelper clhelper;
     private AtomicBoolean initializedGLCL = new AtomicBoolean(false);
@@ -229,6 +227,11 @@ public class BasicEventListenerCLGL implements GLEventListener {
         GL2 gl = drawable.getGL().getGL2();
         // ensure pipeline is clean before doing cl work
         gl.glFinish();
+        // change swap interva if necessary
+        if(updateSwapInt.get()){
+            gl.setSwapInterval(swapInterval);
+            updateSwapInt.set(false);
+        }
         int mesh = (int)(Math.sqrt(posBuffSize/4));
         // kernel updates new shape
         if(initializedGLCL.get()){
@@ -281,6 +284,15 @@ public class BasicEventListenerCLGL implements GLEventListener {
         gl.glPopMatrix();
         gl.glMatrixMode(GL2.GL_MODELVIEW);
         gl.glPopMatrix();
+    }
+    /**
+    *         setSwapInterval sets the swap interval for opengl.
+    * 
+    *  @param sw - new swap interval time
+    */ 
+    public void setSwapInterval(int sw) {
+        swapInterval = sw;
+        updateSwapInt.set(true);
     }
     /**
     *         setPointSize sets the size of points drawn.

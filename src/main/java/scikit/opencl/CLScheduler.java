@@ -589,6 +589,16 @@ public class CLScheduler{
         kernelPosWorkInfo[4] = ly;
         posKernel = kerin;
     }
+    
+    /**
+    *         setSwapInterval sets the swap interval for opengl.
+    * 
+    *  @param sw - new swap interval time
+    */ 
+    public void setSwapInterval(int sw) {
+        _bel.setSwapInterval(sw);
+    }
+    
     // run the color kernel    
     private void runColorKernel() {        
         if(kernelColWorkInfo[0] == 2){
