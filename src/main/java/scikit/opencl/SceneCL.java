@@ -13,6 +13,7 @@ import javax.swing.JPopupMenu;
 import javax.swing.Timer;
 import scikit.graphics.Scene;
 import scikit.util.Bounds;
+
 /**
 *       SceneCL is an OpenCL extension of the scene class .
 * 

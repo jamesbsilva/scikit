@@ -56,6 +56,7 @@ public class CLScheduleJobs{
         String kernelSource;
         int buffNumSource;
         boolean copyBuffer=false;
+        boolean updateBuffer=false;
         int buffSize;
         int glInd = -1;
         float[] buffData;
@@ -96,6 +97,46 @@ public class CLScheduleJobs{
             glInd = gl;
             glShared = true;
         }
+        // update buffer
+        public flBufferJob(String kin,int bn,int bsize,float[] din, boolean fill, int gl){
+            kernel = kin;
+            buffNum = bn;
+            buffSize = bsize;
+            buffData = din;
+            fillMode = fill;
+            glInd = gl;
+            glShared = true;
+        }
+        // update buffer
+        public flBufferJob(String kin,int bn,int bsize,ArrayList<Float> din, boolean fill, int gl){
+            kernel = kin;
+            buffNum = bn;
+            buffSize = bsize;
+            buffDataAL = din;
+            fillMode = fill;
+            glInd = gl;
+            glShared = true;
+        }
+        // update buffer
+        public flBufferJob(String kin,int bn,int bsize,ArrayList<Float> din, boolean fill){
+            kernel = kin;
+            buffNum = bn;
+            buffSize = bsize;
+            buffDataAL = din;
+            fillMode = fill;
+            glInd = -1;
+            glShared = false;
+        }
+        // update buffer
+        public flBufferJob(String kin,int bn,int bsize,float[] din, boolean fill){
+            kernel = kin;
+            buffNum = bn;
+            buffSize = bsize;
+            buffData = din;
+            fillMode = fill;
+            glInd = -1;
+            glShared = false;
+        }
         public flBufferJob(String kin,int bn,int bsize,ArrayList<Float> din,String rin, boolean fill,int gl){
             kernel = kin;
             buffNum = bn;
@@ -114,6 +155,7 @@ public class CLScheduleJobs{
         String kernelSource;
         int buffNumSource;
         boolean copyBuffer=false;
+        boolean updateBuffer=false;
         int[] buffData;
         ArrayList<Integer> buffDataAL;
         String rw;
@@ -139,6 +181,24 @@ public class CLScheduleJobs{
             buffSize = bsize;
             buffDataAL = din;
             rw = rin;
+            fillMode = fill;
+        }
+        // update buffer
+        public intBufferJob(String kin,int bn,int bsize,ArrayList<Integer> din,boolean fill){
+            kernel = kin;
+            buffNum = bn;
+            buffSize = bsize;
+            buffDataAL = din;
+            updateBuffer = true;
+            fillMode = fill;
+        }
+        // update buffer
+        public intBufferJob(String kin,int bn,int bsize,int[] din,boolean fill){
+            kernel = kin;
+            buffNum = bn;
+            buffSize = bsize;
+            buffData = din;
+            updateBuffer = true;
             fillMode = fill;
         }
     }

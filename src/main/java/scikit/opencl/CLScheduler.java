@@ -5,6 +5,8 @@ package scikit.opencl;
 *    @(#)   CLScheduler
 */  
 
+import java.nio.FloatBuffer;
+import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -49,6 +51,7 @@ public class CLScheduler{
     private ArrayList<intBufferJob> intjobs;
     private ArrayList<longBufferJob> longjobs;
     private ArrayList<kernelJob> kerneljobs;
+    
     /**
     *        CLScheduler constructor
     * 
@@ -235,11 +238,137 @@ public class CLScheduler{
         schedBuffer.set(true);
         scheduledEvent.set(true);
     }
+
+    /**
+    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *   into the given float buffer in given float buffer.
+    * 
+    *  @param kern - kernel to copy the position float buffer into
+    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
+    *  @param buffsize -float buffer size
+    *  @param data -float array to initialize buffer into
+    *  @param rw - read write ( r/w/rw)
+    *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
+    */ 
+    public void schedUpdatePosSharedBuffer(float[] data,int dataSize,boolean fillprop){
+        if(schedBuffer.get()){waitForLastScheduled();}
+        flBufferJob  fljob = new  flBufferJob(initKernel,initKernelPosBuffNum,dataSize,data,fillprop,_bel.getPosGLind()); 
+        fljobs.add(fljob);
+        schedBuffer.set(true);
+        scheduledEvent.set(true);
+    }
+    
+    /**
+    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *   into the given float buffer in given float buffer.
+    * 
+    *  @param kern - kernel to copy the position float buffer into
+    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
+    *  @param buffsize -float buffer size
+    *  @param data -float array to initialize buffer into
+    *  @param rw - read write ( r/w/rw)
+    *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
+    */ 
+    public void schedUpdateIntBuffer(String kern, int buffnum, int[] data,int dataSize,boolean fillprop){
+        if(schedBuffer.get()){waitForLastScheduled();}
+        intBufferJob  intjob = new  intBufferJob(kern,buffnum,dataSize,data,fillprop); 
+        intjobs.add(intjob);
+        schedBuffer.set(true);
+        scheduledEvent.set(true);
+    }
+
+    /**
+    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *   into the given float buffer in given float buffer.
+    * 
+    *  @param kern - kernel to copy the position float buffer into
+    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
+    *  @param buffsize -float buffer size
+    *  @param data -float array to initialize buffer into
+    *  @param rw - read write ( r/w/rw)
+    *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
+    */ 
+    public void schedUpdateIntBuffer(String kern, int buffnum, ArrayList<Integer> data,int dataSize,boolean fillprop){
+        if(schedBuffer.get()){waitForLastScheduled();}
+        intBufferJob  intjob = new  intBufferJob(kern,buffnum,dataSize,data,fillprop); 
+        intjobs.add(intjob);
+        schedBuffer.set(true);
+        scheduledEvent.set(true);
+    }
+    
+    /**
+    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *   into the given float buffer in given float buffer.
+    * 
+    *  @param kern - kernel to copy the position float buffer into
+    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
+    *  @param buffsize -float buffer size
+    *  @param data -float array to initialize buffer into
+    *  @param rw - read write ( r/w/rw)
+    *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
+    */ 
+    public void schedUpdateFloatBuffer(String kern, int buffnum, ArrayList<Float> data,int dataSize,boolean fillprop){
+        if(schedBuffer.get()){waitForLastScheduled();}
+        flBufferJob  fljob = new  flBufferJob(kern,buffnum,dataSize,data,fillprop); 
+        fljobs.add(fljob);
+        schedBuffer.set(true);
+        scheduledEvent.set(true);
+    }
+    /**
+    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *   into the given float buffer in given float buffer.
+    * 
+    *  @param kern - kernel to copy the position float buffer into
+    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
+    *  @param buffsize -float buffer size
+    *  @param data -float array to initialize buffer into
+    *  @param rw - read write ( r/w/rw)
+    *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
+    */ 
+    public void schedUpdateFloatBuffer(String kern, int buffnum, float[] data,int dataSize,boolean fillprop){
+        if(schedBuffer.get()){waitForLastScheduled();}
+        flBufferJob  fljob = new  flBufferJob(kern,buffnum,dataSize,data,fillprop); 
+        fljobs.add(fljob);
+        schedBuffer.set(true);
+        scheduledEvent.set(true);
+    }
+    
+    /**
+    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *   into the given float buffer in given float buffer.
+    * 
+    *  @param kern - kernel to copy the position float buffer into
+    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
+    *  @param buffsize -float buffer size
+    *  @param data -float array to initialize buffer into
+    *  @param rw - read write ( r/w/rw)
+    *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
+    */ 
+    public void schedUpdateColSharedBuffer(float[] data,int dataSize,boolean fillprop){
+        if(schedBuffer.get()){waitForLastScheduled();}
+        flBufferJob  fljob = new  flBufferJob(initKernel,initKernelColBuffNum,dataSize,data,fillprop,_bel.getColGLind()); 
+        fljobs.add(fljob);
+        schedBuffer.set(true);
+        scheduledEvent.set(true);
+    }
+    
     // runs any scheduled float buffer operations
     private void runSchedFloatBuffer(flBufferJob fljob){
         if(fljob.copyBuffer){
             //System.out.println("Copying from : "+fljob.kernelSource+"    to | "+fljob.kernel);
             clhelper.copyFlBufferAcrossKernel(fljob.kernelSource, fljob.buffNumSource, fljob.kernel, fljob.buffNum);
+        }if(fljob.updateBuffer){
+            // update buffer based on data
+            FloatBuffer tempBuff = (FloatBuffer) clhelper.getArgHandler().getDirectFlBuffer(fljob.kernel, fljob.buffNum);
+            if(fljob.buffDataAL != null){
+                for(int u = 0; u < fljob.buffDataAL.size();u++){
+                    tempBuff.put(u,fljob.buffDataAL.get(u));
+                }
+            }else{
+                for(int u = 0; u < fljob.buffData.length;u++){
+                    tempBuff.put(u,fljob.buffData[u]);       
+                }
+            }
         }else{
             if(fljob.glShared){
                 clhelper.createFloatBufferGL(fljob.kernel,fljob.buffNum,
@@ -253,14 +382,30 @@ public class CLScheduler{
 
     // runs any scheduled int buffer operations
     private void runSchedIntBuffer(intBufferJob intjob){
-        clhelper.createIntBuffer(intjob.kernel,intjob.buffNum,
-                    intjob.buffSize, intjob.buffData, clhelper.convertStringToRWInt(intjob.rw), intjob.fillMode);    
+        if(intjob.updateBuffer){
+            // update buffer based on data
+            IntBuffer tempBuff = (IntBuffer) clhelper.getArgHandler().getDirectIntBuffer(intjob.kernel, intjob.buffNum);
+            if(intjob.buffDataAL != null){
+                for(int u = 0; u < intjob.buffDataAL.size();u++){
+                    tempBuff.put(u,intjob.buffDataAL.get(u));
+                }
+            }else{
+                for(int u = 0; u < intjob.buffData.length;u++){
+                    tempBuff.put(u,intjob.buffData[u]);       
+                }
+            }
+        }else{
+            clhelper.createIntBuffer(intjob.kernel,intjob.buffNum,
+                    intjob.buffSize, intjob.buffData, clhelper.convertStringToRWInt(intjob.rw), intjob.fillMode);
+        }
     }
+    
     // runs any scheduled long buffer operations
     private void runSchedLongBuffer(longBufferJob longjob){
         clhelper.createLongBuffer(longjob.kernel,longjob.buffNum,
                     longjob.buffSize, longjob.buffData, clhelper.convertStringToRWInt(longjob.rw), longjob.fillMode);    
     }
+    
     // runs any scheduled buffer operations if there are any
     private void makeSchedBuffer(){
         if(schedBuffer.get()){
@@ -279,7 +424,6 @@ public class CLScheduler{
             longjobs.clear();
         }
     }
-    
     
     /**
     *         sched1DKernel schedules the running of a 1D kernel

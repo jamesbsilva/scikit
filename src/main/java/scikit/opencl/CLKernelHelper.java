@@ -8,6 +8,7 @@ package scikit.opencl;
 import com.jogamp.opencl.CLBuffer;
 import com.jogamp.opencl.CLCommandQueue;
 import com.jogamp.opencl.CLContext;
+import com.jogamp.opencl.CLException.CLInvalidCommandQueueException;
 import com.jogamp.opencl.CLKernel;
 import com.jogamp.opencl.CLProgram;
 import com.jogamp.opencl.gl.CLGLBuffer;
@@ -278,6 +279,7 @@ public class CLKernelHelper {
         // Set as buffers for the queue
         for(int j =0;j<kernelTypes.size();j++){
             typecurr = kernelTypes.get(j);
+            try{
             if(typecurr.contains("int")&& typecurr.contains("buffer")){
                 ArrayList<CLBuffer<IntBuffer>> outBuffers = arghandler.getIntBuffers().get(kernelname);
                 CLBuffer<IntBuffer> push = outBuffers.get(intBuffInd);
@@ -299,6 +301,11 @@ public class CLKernelHelper {
                 CLBuffer<LongBuffer> push = outBuffers.get(longBuffInd);
                 queue.putWriteBuffer(push,false);
                 longBuffInd++;
+            }
+            }catch(CLInvalidCommandQueueException err){
+                System.err.println("Exception in queueing buffer | "
+                        +typecurr+" which is argument number "+j
+                        +"    float buffers pushed :"+floatBuffInd+"    long buffers pushed :"+longBuffInd);
             }
         }
     }

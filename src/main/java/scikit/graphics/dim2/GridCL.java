@@ -315,7 +315,6 @@ public class GridCL extends Scene2DCL {
             }
 	}
 	
-	
 	private Drawable<Gfx2D> _gridDrawable = new Drawable<Gfx2D>() {
             public void draw(Gfx2D g) {
             if (_image != null) {
