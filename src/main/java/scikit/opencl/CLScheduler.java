@@ -38,17 +38,12 @@ public class CLScheduler{
     private AtomicBoolean schedBuffer = new AtomicBoolean(false);
     private AtomicBoolean schedKernel = new AtomicBoolean(false);
     private AtomicInteger kernelRunsCompleted = new AtomicInteger(0);
-    private String posKernel = "";
-    private String colKernel = "";
-    private String initKernel = "";
-    private int initKernelPosBuffNum;
-    private int initKernelColBuffNum;
-    private int[] kernelPosWorkInfo = new int[5];
-    private int[] kernelColWorkInfo = new int[5];
+    private String posKernel = ""; private String colKernel = ""; private String initKernel = "";
+    private int initKernelPosBuffNum; private int initKernelColBuffNum;
+    private int[] kernelPosWorkInfo = new int[5]; private int[] kernelColWorkInfo = new int[5];
     private AtomicBoolean noKernelChunks = new AtomicBoolean(false);
     private AtomicInteger kernelRunChunk = new AtomicInteger(0);
-    private ArrayList<flBufferJob> fljobs;
-    private ArrayList<intBufferJob> intjobs;
+    private ArrayList<flBufferJob> fljobs; private ArrayList<intBufferJob> intjobs;
     private ArrayList<longBufferJob> longjobs;
     private ArrayList<kernelJob> kerneljobs;
     
@@ -240,14 +235,11 @@ public class CLScheduler{
     }
 
     /**
-    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *         schedUpdatePosSharedBuffer schedules update of the position buffer
     *   into the given float buffer in given float buffer.
     * 
-    *  @param kern - kernel to copy the position float buffer into
-    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
-    *  @param buffsize -float buffer size
+    *  @param dataSize -float buffer size
     *  @param data -float array to initialize buffer into
-    *  @param rw - read write ( r/w/rw)
     *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
     */ 
     public void schedUpdatePosSharedBuffer(float[] data,int dataSize,boolean fillprop){
@@ -259,14 +251,13 @@ public class CLScheduler{
     }
     
     /**
-    *         schedMakeColSharedBuffer schedules making of the color buffer
-    *   into the given float buffer in given float buffer.
+    *         schedUpdateIntBuffer schedules updating of the buffer
+    *   into the given int buffer in given int buffer.
     * 
     *  @param kern - kernel to copy the position float buffer into
     *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
-    *  @param buffsize -float buffer size
-    *  @param data -float array to initialize buffer into
-    *  @param rw - read write ( r/w/rw)
+    *  @param dataSize -int buffer size
+    *  @param data -int array to initialize buffer into
     *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
     */ 
     public void schedUpdateIntBuffer(String kern, int buffnum, int[] data,int dataSize,boolean fillprop){
@@ -278,14 +269,13 @@ public class CLScheduler{
     }
 
     /**
-    *         schedMakeColSharedBuffer schedules making of the color buffer
-    *   into the given float buffer in given float buffer.
+    *         schedUpdateIntBuffer schedules updating of the buffer
+    *   into the given int buffer in given int buffer.
     * 
     *  @param kern - kernel to copy the position float buffer into
     *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
-    *  @param buffsize -float buffer size
+    *  @param dataSize -float buffer size
     *  @param data -float array to initialize buffer into
-    *  @param rw - read write ( r/w/rw)
     *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
     */ 
     public void schedUpdateIntBuffer(String kern, int buffnum, ArrayList<Integer> data,int dataSize,boolean fillprop){
@@ -297,14 +287,13 @@ public class CLScheduler{
     }
     
     /**
-    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *         schedUpdateFloatBuffer schedules updating of the color buffer
     *   into the given float buffer in given float buffer.
     * 
     *  @param kern - kernel to copy the position float buffer into
     *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
-    *  @param buffsize -float buffer size
+    *  @param dataSize -float buffer size
     *  @param data -float array to initialize buffer into
-    *  @param rw - read write ( r/w/rw)
     *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
     */ 
     public void schedUpdateFloatBuffer(String kern, int buffnum, ArrayList<Float> data,int dataSize,boolean fillprop){
@@ -315,14 +304,13 @@ public class CLScheduler{
         scheduledEvent.set(true);
     }
     /**
-    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *         schedUpdateFloatBuffer schedules updating of the color buffer
     *   into the given float buffer in given float buffer.
     * 
     *  @param kern - kernel to copy the position float buffer into
     *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
-    *  @param buffsize -float buffer size
+    *  @param dataSize -float buffer size
     *  @param data -float array to initialize buffer into
-    *  @param rw - read write ( r/w/rw)
     *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
     */ 
     public void schedUpdateFloatBuffer(String kern, int buffnum, float[] data,int dataSize,boolean fillprop){
@@ -334,14 +322,11 @@ public class CLScheduler{
     }
     
     /**
-    *         schedMakeColSharedBuffer schedules making of the color buffer
+    *         schedUpdateColSharedBuffer schedules updating of the color buffer
     *   into the given float buffer in given float buffer.
     * 
-    *  @param kern - kernel to copy the position float buffer into
-    *  @param buffnum -float buffer in which kernel argument number (must create float buffer 0 before 1 ,1 before 2)
-    *  @param buffsize -float buffer size
+    *  @param dataSize -float buffer size
     *  @param data -float array to initialize buffer into
-    *  @param rw - read write ( r/w/rw)
     *  @param fillprop - fill mode for buffer (true if fill sequential copies of data buffer until buffer is filled)
     */ 
     public void schedUpdateColSharedBuffer(float[] data,int dataSize,boolean fillprop){
