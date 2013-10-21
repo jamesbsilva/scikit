@@ -1,7 +1,7 @@
 package scikit.opencl;
 
 /**
-* @(#)  RandomNumberCL
+*       @(#)  RandomNumberCL
 */
 
 // imports

@@ -1,7 +1,7 @@
 package scikit.opencl;
 
 /**
-* @(#)  CLScheduleJobs
+*       @(#)  CLScheduleJobs
 */
 
 import java.util.ArrayList;

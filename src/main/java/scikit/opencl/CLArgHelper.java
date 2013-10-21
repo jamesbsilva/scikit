@@ -1,7 +1,6 @@
 package scikit.opencl;
 
 /**
-* 
 *    @(#)   CLArgHelper
 */ 
 

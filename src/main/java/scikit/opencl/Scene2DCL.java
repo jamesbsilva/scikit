@@ -1,7 +1,7 @@
 package scikit.opencl;
 
 /**
-* @(#)  Scene2DCL
+*       @(#)  Scene2DCL
 */
 
 import java.awt.Color;
@@ -18,10 +18,7 @@ import javax.swing.event.MouseInputAdapter;
 import javax.swing.event.MouseInputListener;
 
 import scikit.graphics.Drawable;
-import scikit.graphics.Scene;
 import scikit.graphics.dim2.Gfx2D;
-import scikit.graphics.dim2.Gfx2DGL;
-import scikit.graphics.dim2.Scene2D;
 import scikit.util.Bounds;
 import scikit.util.Point;
 
